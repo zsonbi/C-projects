@@ -78,31 +78,29 @@ void Cut(const char *string, const char *delim, int index, char *splitted)
         }
         else if (counter > index)
         {
-           break;
+            break;
         }
     }
-    splitted[splittedIndex]='\0';
+    splitted[splittedIndex] = '\0';
 }
 
 // Creates a substring of the string with a start index given in the parameter and an endindex(-1 if it is until end of the string)
 void SubString(char string[], char *subString, int startIndex, int length)
 {
-
-    
-
     if (length == -1)
     {
         length = GetStringLength(string) - startIndex;
     }
-   else if(length+startIndex >GetStringLength(string)){
+    else if (length + startIndex > GetStringLength(string))
+    {
         length = GetStringLength(string) - startIndex;
     }
-   
-    printf("Length: %d \n" , length);
+
+    printf("Length: %d \n", length);
 
     for (size_t i = startIndex; i < startIndex + length; i++)
     {
         subString[i - startIndex] = string[i];
     }
-    subString[length]='\0';
+    subString[length] = '\0';
 }
