@@ -1,5 +1,6 @@
 #include "stringMethods.h"
 #include <stdio.h>
+#include <ctype.h>
 
 // Only works if the string contains at least 1 '\0' terminator otherwise makes an infinite cycle
 int GetStringLength(const char *string)
@@ -58,7 +59,8 @@ void Cut(const char *string, const char *delim, int index, char *splitted)
     int delimSize = GetStringLength(delim);
     for (const char *ptr = string; (*ptr) != '\0'; ptr++)
     {
-        for (size_t i = 0; i < delimSize; i++)
+
+        for (int i = 0; i < delimSize; i++)
         {
             if (*(ptr + i) != delim[i])
             {
@@ -67,7 +69,9 @@ void Cut(const char *string, const char *delim, int index, char *splitted)
             if (i == delimSize - 1)
             {
                 counter++;
-                ptr += delimSize;
+                ptr += (delimSize);
+                i=-1;
+
             }
         }
 
@@ -103,4 +107,34 @@ void SubString(char string[], char *subString, int startIndex, int length)
         subString[i - startIndex] = string[i];
     }
     subString[length] = '\0';
+}
+
+// Counts how many times did the specified character occured in the string
+int CountOfCharacters(const char *string, char charToSearch)
+{
+    int counter = 0;
+    for (const char *ptr = string; (*ptr) != '\0'; ptr++)
+    {
+        if ((*ptr) == charToSearch)
+        {
+            counter++;
+        }
+    }
+    return counter;
+}
+
+//Makes the string full lowercase
+void ToLower(char* string){
+for (char* ptr  = string; (*ptr)!='\0'; ptr++)
+{
+    (*ptr) = tolower((*ptr));
+}
+}
+
+//Makes the string full uppercase
+void ToUpper(char* string){
+for (char* ptr  = string; (*ptr)!='\0'; ptr++)
+{
+    (*ptr) = toupper((*ptr));
+}
 }

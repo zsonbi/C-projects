@@ -95,7 +95,7 @@ int main()
 
 //Prints the result
 Result:
-printf("Result: \nIn binary: ");
+printf("The summary: \nIn binary: ");
   
     for (size_t i = 0; i < 4; i++)
     {

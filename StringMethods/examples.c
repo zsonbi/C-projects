@@ -7,7 +7,7 @@ int main(){
 
 //The example string
 //(it has to be of type char[] with char* it doesn't work)
-char arr[] ="172.25.62.7";
+char arr[] ="asD4624dsA..";
 
 //Gets the number of characters in the string
 printf("Size of string: %d\n", GetStringLength(arr));
@@ -22,13 +22,24 @@ printf("Contains: %d\n",Contains(arr,"."));
 
 //Gets the substring after second '.' till the third '.'
 char splitted[4];
-Cut(arr,".",2,splitted);
+Cut(arr,".",1,splitted);
 printf("Splitted: %s\n",splitted);
 
 //Creates a substring from the third character till the end of the string
 char subStr[20];
 SubString(arr,subStr,2,-1);
-printf("Substring: %s",subStr);
+printf("Substring: %s \n",subStr);
+
+//Gets the number of '.' characters
+printf("There are %d '.' in the string \n", CountOfCharacters(arr,'.'));
+
+//Makes the string full lower case
+ToLower(arr);
+printf("Lowercase string: %s \n",arr);
+
+//Makes the string full upper case
+ToUpper(arr);
+printf("Lowercase string: %s \n",arr);
 
     return 0;
 }

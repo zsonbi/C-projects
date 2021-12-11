@@ -15,4 +15,13 @@ void Cut(const char* string,const char* delim, int index, char* splitted);
 //Creates a substring of the string with a start index given in the parameter and an endindex(-1 if it is until end of the string)
 void SubString(char string[],char* subString, int startIndex, int length);
 
+//Counts how many times did the specified character occured in the string
+int CountOfCharacters(const char* string, char charToSearch);
+
+//Makes the string full lowercase
+void ToLower(char* string);
+
+//Makes the string full uppercase
+void ToUpper(char* string);
+
 #endif
