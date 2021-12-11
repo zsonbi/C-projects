@@ -133,7 +133,7 @@ int main()
 
     for (size_t i = 0; i < 8; i++)
     {
-        printf("%x", result[i]);
+        printf("%X", result[i]);
         if (i < 7)
         {
             printf(":");
