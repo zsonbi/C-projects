@@ -141,4 +141,6 @@ int main()
     }
 
     printf("/%d", prefix);
+
+    scanf("%s");
 }

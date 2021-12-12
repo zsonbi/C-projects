@@ -122,6 +122,6 @@ printf("The summary: \nIn binary: ");
 
     printf("/%d\n",prefix);
     
-
+    scanf("%s");
    
 }
