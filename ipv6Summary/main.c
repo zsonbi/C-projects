@@ -57,16 +57,16 @@ void ReadInIp(unsigned short address[8])
     ToUpper(input);
 
     // Convert it to decimals (unsigned shorts)
-    int numberOfHextet = CountOfCharacters(input, ':') + 1;
+    int numberOfHextet = CountOfCharacters(input, ':')+1;
     int addressIndex = 0;
     for (int i = 0; i < numberOfHextet; i++)
     {
         char splitted[5];
         Cut(input, ":", i, splitted);
-        if (splitted[0] == '\0')
+        if (splitted[0] == '\0' && addressIndex == i)
         {
 
-            for (int j = 0; j <= 8 - numberOfHextet; j++)
+          for (int j = 0; j <= 8 - numberOfHextet; j++)
             {
                 address[addressIndex] = 0;
                 addressIndex++;
@@ -78,6 +78,7 @@ void ReadInIp(unsigned short address[8])
             addressIndex++;
         }
     }
+
 }
 
 // Summarize 2 ipv6 networks into 1
@@ -98,7 +99,7 @@ void Summarize(unsigned short firstAddress[8], unsigned short secondAddress[8], 
             {
                 if ((firstAddress[i] >> j) ^ (secondAddress[i] >> j))
                 {
-                    // printf("\n first: %x second: %x itr %d \n",firstAddress[i] >> j,secondAddress[i] >> j, j);
+                   //  printf("\n first: %x second: %x itr %d \n",firstAddress[i] >> j,secondAddress[i] >> j, j);
                     return;
                 }
                 else
@@ -121,7 +122,7 @@ int main()
 {
     unsigned short firstIpv6[8];
     ReadInIp(firstIpv6);
-
+    
     unsigned short secondIpv6[8];
     ReadInIp(secondIpv6);
 
@@ -129,7 +130,7 @@ int main()
     unsigned char prefix;
     Summarize(firstIpv6, secondIpv6, result, &prefix);
 
-    printf("Result: \n");
+    printf("\nResult: \n");
 
     for (size_t i = 0; i < 8; i++)
     {
