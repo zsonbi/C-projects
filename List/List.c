@@ -21,9 +21,7 @@ struct ListItem *GetListItemAtIndex(List *list, int index)
 //Creates a new list
 void InitList(List *list)
 {
-   if(list->Head > 0){
-   printf("List is already initialized");
-   }
+
    list->Head = 0;
    list->Count=0;
 }
