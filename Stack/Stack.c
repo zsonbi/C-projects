@@ -38,7 +38,7 @@ int Peek(Stack *stack)
 {
     if (stack->Count == 0)
     {
-        printf("Stack is empty");
+        printf("Peek not possible stack is empty");
         return 0;
     }
     return stack->Tail->value;
