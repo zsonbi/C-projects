@@ -168,7 +168,7 @@ void Solve(Stack *towers, unsigned char towerCount, int brickCount, unsigned cha
 int main(int argc, char *argv[])
 {
     unsigned char towerCount = 3;
-    int brickCount = 20;
+    int brickCount = 8;
     unsigned char randomized = 0;
     int targetTower = 2;
 

@@ -2,12 +2,22 @@
 // Starts a new game on an another thread inputPtr is to the player's dino
 unsigned int StartGame(void *inputPtr)
 {
-    float refreshMultiplier = 1.0;
+#ifdef _WIN32
+    // Clears the screen
+    system("cls");
+#else
+    // Clears the screen
+    system("clear");
+#endif
+
+    float refreshMultiplier = 1.0; // How quick should the game move
     Dino *player = ((Dino *)inputPtr);
     Cactus *cactHead = NULL; // A pointer to the nearest cactus
     Bird *birdHead = NULL;   // A pointer to the nearest bird
     int lastObstacle = 0;
-
+#ifdef _WIN32
+    COORD Coord;
+#endif
     char board[GAME_ROW_COUNT][GAME_COL_COUNT];
 
     // Reset the values in the board 2d array to ' '
@@ -31,17 +41,38 @@ unsigned int StartGame(void *inputPtr)
         board[(GAME_ROW_COUNT - 1)][i] = '^';
     }
 
+    // Print our the whole board
+    for (int i = 0; i < GAME_ROW_COUNT; i++)
+    {
+        printf("%s\n", board[i]);
+    }
+
     // The game cyle itself
     do
     {
+
+        #ifndef _WIN32
+        // Clears the screen
+        system("clear");
+        #endif
 
         // Erase the dino
         for (int i = 0; i < 5; i += 2)
         {
             board[player->coords[i]][player->coords[i + 1]] = ' ';
+            // Remove the dino from the console
+#ifdef _WIN32
+            Coord.X = (*player).coords[i + 1];
+            Coord.Y = (*player).coords[i];
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+       printf(" ");
+#endif
+
+     
         }
         // Move the dino
         ManageDino(player);
+
         // Erase birds
         Bird *tempBirdPointer = birdHead;
         while (tempBirdPointer != NULL)
@@ -49,6 +80,14 @@ unsigned int StartGame(void *inputPtr)
             for (int i = 0; i < 8; i += 2)
             {
                 board[tempBirdPointer->coords[i]][tempBirdPointer->coords[i + 1]] = ' ';
+                // Remove the birds from the console
+#ifdef _WIN32
+                Coord.X = tempBirdPointer->coords[i + 1];
+                Coord.Y = tempBirdPointer->coords[i];
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+                printf(" ");
+#endif
+
             }
             tempBirdPointer = tempBirdPointer->nextBird;
         }
@@ -63,6 +102,15 @@ unsigned int StartGame(void *inputPtr)
                 if (tempCactPointer->coords[i] != -1)
                 {
                     board[tempCactPointer->coords[i]][tempCactPointer->coords[i + 1]] = ' ';
+
+                    // Remove the cactuses from the console
+#ifdef _WIN32
+                    Coord.X = tempCactPointer->coords[i + 1];
+                    Coord.Y = tempCactPointer->coords[i];
+                    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+                               printf(" ");
+                               #endif
+         
                 }
             }
             tempCactPointer = tempCactPointer->nextCact;
@@ -86,6 +134,15 @@ unsigned int StartGame(void *inputPtr)
             for (int i = 0; i < 8; i += 2)
             {
                 board[tempBirdPointer->coords[i]][tempBirdPointer->coords[i + 1]] = '<';
+
+                // Draw the birds to the console
+#ifdef _WIN32
+                Coord.X = tempBirdPointer->coords[i + 1];
+                Coord.Y = tempBirdPointer->coords[i];
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+    printf("<");
+#endif
+            
             }
             tempBirdPointer = tempBirdPointer->nextBird;
         }
@@ -99,6 +156,15 @@ unsigned int StartGame(void *inputPtr)
                 if (tempCactPointer->coords[i] != -1)
                 {
                     board[tempCactPointer->coords[i]][tempCactPointer->coords[i + 1]] = '%';
+
+                    // Draw the cactuses to the console
+#ifdef _WIN32
+                    Coord.X = tempCactPointer->coords[i + 1];
+                    Coord.Y = tempCactPointer->coords[i];
+                    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+            printf("%%");
+#endif
+        
                 }
             }
 
@@ -119,20 +185,29 @@ unsigned int StartGame(void *inputPtr)
                 return 0;
             }
             board[player->coords[i]][player->coords[i + 1]] = 'D';
-        }
 
+            // Draw the dino to the console
 #ifdef _WIN32
-        // Clears the screen
-        system("cls");
-#else
-        system("clear");
+            Coord.X = (*player).coords[i + 1];
+            Coord.Y = (*player).coords[i];
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+         printf("D");
 #endif
-
-        // Print our the whole board
-        for (int i = 0; i < GAME_ROW_COUNT; i++)
-        {
-            printf("%s\n", board[i]);
+   
         }
+
+// Park the cursor at the right bottom side
+#ifdef _WIN32
+        Coord.X = GAME_COL_COUNT;
+        Coord.Y = GAME_ROW_COUNT;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+#else
+    // Print our the whole board
+    for (int i = 0; i < GAME_ROW_COUNT; i++)
+    {
+        printf("%s\n", board[i]);
+    }
+#endif
 
         // Wait till the next frame update
 #ifdef _WIN32
@@ -151,6 +226,7 @@ unsigned int StartGame(void *inputPtr)
     return 1;
 }
 
+//---------------------------------------------------------------------------------
 // Frees the memory which was allocated to the obstacles
 void FreeMemory(Bird **birdHead, Cactus **cactHead)
 {
@@ -171,6 +247,7 @@ void FreeMemory(Bird **birdHead, Cactus **cactHead)
     }
 }
 
+//-----------------------------------------------------------------------------
 // Creates a new bird
 void CreateNewBird(Bird **newBird)
 {
@@ -189,6 +266,7 @@ void CreateNewBird(Bird **newBird)
     (*newBird)->coords[7] = GAME_COL_COUNT - 2;
 }
 
+//----------------------------------------------------------------------------
 // Creates a new cactus
 void CreateNewCactus(Cactus **newCact)
 {
@@ -210,7 +288,7 @@ void CreateNewCactus(Cactus **newCact)
         }
     }
 }
-
+//-----------------------------------------------------------------------------------------
 // Manages the obstacles spawning, moving and deleting
 BOOLEAN HandleObstacles(Bird **birdHead, Cactus **cactHead, BOOLEAN canSpawn)
 {
@@ -293,6 +371,7 @@ BOOLEAN HandleObstacles(Bird **birdHead, Cactus **cactHead, BOOLEAN canSpawn)
     return FALSE;
 }
 
+//-------------------------------------------------------------------------------------
 // Changes dino's coord's to ducking state
 void DinoToFloorDucking(Dino *dino)
 {
@@ -304,6 +383,7 @@ void DinoToFloorDucking(Dino *dino)
     dino->coords[5] = DINO_COLUMN + 2;
 }
 
+//----------------------------------------------------------------------------------------
 // Changes dino's coord to standing state
 void DinoToFloorStanding(Dino *dino)
 {
@@ -315,6 +395,7 @@ void DinoToFloorStanding(Dino *dino)
     dino->coords[5] = DINO_COLUMN + 1;
 }
 
+//-----------------------------------------------------------------------------------------------------------------
 // Manages the dinos state. Poor guy has to go through a lot of things just like jews in the minefield
 void ManageDino(Dino *dino)
 {
